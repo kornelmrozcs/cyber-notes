@@ -1,5 +1,5 @@
 OverTheWire/bandit-passwords.md
 .DS_Store
 Thumbs.db
-.obsidian
-.old
+.obsidian/
+.old/
