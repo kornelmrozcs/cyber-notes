@@ -34,10 +34,15 @@ If you are new here or just browsing:
 
 ```
 Cyber/
+
+
 ├── CS50/
-│   ├── 01-passwords.md
-│   ├── 02-cryptography.md
-│   └── 03-c-basics.md
+│   └── CyberSecurity/
+│       ├── 01-passwords.md
+│       └── 02-cryptography.md
+│   └── x/
+│       └── 01-c-basics.md
+│
 ├── TryHackMe/
 │   ├── 01-network-basics.md
 │   ├── 02-osi-model.md
