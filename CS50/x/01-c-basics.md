@@ -1,6 +1,6 @@
-# CS50x — C Basics: Loops, Functions and Luhn's Algorithm
+# CS50x — C Basics: Loops, Functions and Algorithms
 
-> Personal notes from CS50x problem sets. Covers input/output in C, loop types, functions, digit manipulation and the Credit task.
+> Notes from CS50x. Covers the building blocks you need before tackling problem sets — input/output, loops, functions, how to pull digits out of a number, and how greedy algorithms think.
 
 ---
 
@@ -11,33 +11,34 @@
 #include <cs50.h>    // get_int, get_long, get_string
 ```
 
-`stdio.h` is part of the C standard library. `cs50.h` is a helper library provided by the course that simplifies user input.
+`stdio.h` is standard C. `cs50.h` is a course helper that wraps input functions so you do not have to deal with `scanf` right away. Worth knowing that in real C you would handle input yourself — but for now it keeps things clean.
 
 ---
 
 ## Input and output
 
 ```c
-// Output
 printf("Hello, world\n");
 printf("Number: %i\n", 42);
 printf("Long: %li\n", 1234567890L);
 
-// Input (cs50.h)
-int n        = get_int("Enter a number: ");
-long card    = get_long("Card number: ");
-string name  = get_string("Name: ");
+int n     = get_int("Enter a number: ");
+long card = get_long("Card number: ");
 ```
 
-Common format specifiers: `%i` or `%d` for int, `%li` for long, `%f` for float, `%s` for string.
+Format specifiers to remember: `%i` for int, `%li` for long, `%f` for float, `%s` for string.
 
-`get_long` is necessary for credit card numbers. An `int` holds a maximum of around 2 billion. Card numbers have 13–16 digits, which requires a `long`.
+One thing that caught me early — using `int` for a credit card number does not work. An `int` maxes out around 2 billion, and card numbers have 13–16 digits. You need `long`.
 
 ---
 
 ## Loops
 
-### for — when the number of iterations is known
+Three types, each with a specific use case. Knowing which one to reach for matters more than it seems at first.
+
+### for
+
+Use when you know in advance how many iterations you need.
 
 ```c
 for (int i = 0; i < height; i++)
@@ -46,7 +47,9 @@ for (int i = 0; i < height; i++)
 }
 ```
 
-### while — check condition before each iteration
+### while
+
+Use when you are waiting for a condition to become false. Number of iterations is not known upfront.
 
 ```c
 int i = 0;
@@ -57,7 +60,9 @@ while (i < height)
 }
 ```
 
-### do while — runs at least once, then checks condition
+### do while
+
+Use for input validation. The body runs at least once — you need to ask the question before you can check whether the answer is acceptable.
 
 ```c
 int n;
@@ -68,9 +73,11 @@ do
 while (n <= 0);
 ```
 
-`do while` is the right choice for input validation. You always need to ask at least once before you can check whether the answer is valid.
+This is the one I kept getting wrong early on. The instinct is to use `while`, but then you have to initialise `n` to some dummy value just to get into the loop. `do while` is cleaner here.
 
 ### Nested loops — the Mario pyramid
+
+A good exercise for building intuition about how nested loops interact.
 
 ```c
 int x = get_int("Height: ");
@@ -87,7 +94,7 @@ for (int i = 0; i < x; i++)
 }
 ```
 
-Outer loop controls rows. Inner loops control characters within each row. For a pyramid of height 4:
+Output for height 4:
 
 ```
    #
@@ -96,34 +103,36 @@ Outer loop controls rows. Inner loops control characters within each row. For a 
 ####
 ```
 
-Row `i` has `x - i - 1` spaces and `i + 1` hashes.
+The outer loop controls which row you are on. The two inner loops handle spaces and hashes separately. Row `i` gets `x - i - 1` spaces and `i + 1` hashes. Writing it out on paper first helps a lot.
 
 ---
 
 ## Functions
 
-### Function prototype
+### Prototypes
 
-A prototype tells the compiler a function exists before `main` uses it. Without it the compiler does not know what to expect when it encounters the call.
+A prototype declares that a function exists before `main` sees it. Without one, the compiler complains when it hits a call to a function it has not seen yet.
 
 ```c
-// Prototypes above main
+// prototypes at the top
 int count_digits(long n);
-int luhn_check(long n);
+void print_row(int width);
 
 int main(void)
 {
-    // can call count_digits and luhn_check here
+    // both functions usable here
 }
 
-// Definitions below main
+// actual definitions below
 int count_digits(long n) { ... }
-int luhn_check(long n)   { ... }
+void print_row(int width) { ... }
 ```
+
+The pattern I use: prototypes at the top, `main` in the middle, everything else below. Keeps `main` readable at a glance.
 
 ### void functions
 
-A `void` function performs an action and returns nothing.
+When a function does something but does not need to return a value.
 
 ```c
 void print_row(int hashes)
@@ -134,26 +143,39 @@ void print_row(int hashes)
 }
 ```
 
-Each function should do one clearly defined thing. If a function name contains "and", consider splitting it.
+A rule worth following: one function, one job. If you find yourself writing a function that validates input _and_ prints results _and_ calculates something — split it.
 
 ---
 
 ## Digit manipulation
 
-These two operations are the foundation of working with individual digits in a number.
+This is the core mechanic behind several CS50 tasks. Two operations, used together in a loop.
 
 ```c
-int last_digit = n % 10;    // modulo: gives the last digit
-n = n / 10;                  // integer division: removes the last digit
+int last_digit = n % 10;   // remainder = last digit
+n = n / 10;                 // integer division = remove last digit
 ```
 
 ```
-1234 % 10  = 4      last digit
-1234 / 10  = 123    removed last digit
-123  / 10  = 12
-12   / 10  = 1
-1    / 10  = 0      done
+1234 % 10 = 4      → last digit is 4
+1234 / 10 = 123    → shift right, 4 is gone
+123  / 10 = 12
+12   / 10 = 1
+1    / 10 = 0      → nothing left, loop ends
 ```
+
+### Walking through a number digit by digit
+
+```c
+while (n > 0)
+{
+    int digit = n % 10;
+    // do something with digit
+    n /= 10;
+}
+```
+
+This processes digits from right to left. If you need left to right, you either count digits first and use powers of 10, or reverse the order after. Right to left is usually enough.
 
 ### Counting digits
 
@@ -170,91 +192,61 @@ int count_digits(long n)
 }
 ```
 
-### Processing digits right to left
+---
 
-```c
-while (n > 0)
-{
-    int digit = n % 10;   // get last digit
-    // do something with digit
-    n /= 10;               // remove last digit
-}
-```
+## Luhn's algorithm
+
+Used in the Credit problem set to validate whether a card number is plausible before checking the provider. The algorithm was designed so that a single digit transcription error almost always produces an invalid result.
+
+How it works at a high level:
+
+1. Starting from the **second-to-last** digit, take every other digit and double it.
+2. If doubling gives you a number greater than 9, add its two digits together (which is the same as subtracting 9).
+3. Sum those results.
+4. Add to that sum all the digits you did **not** double, starting from the last digit.
+5. If the total ends in zero — the number is valid.
+
+The digit manipulation tools above (`% 10` and `/ 10`) are exactly what you need to implement this. Think about how to track position as you walk through the number right to left, and how to handle the case where doubling a digit gives you a two-digit result.
+
+I am not including the full implementation here — working through it yourself is the point.
 
 ---
 
-## The Credit task — Luhn's algorithm
+## Greedy algorithms
 
-The task is to validate a credit card number using Luhn's algorithm and then identify the card provider.
+A greedy algorithm always makes the locally optimal choice at each step. It takes the biggest possible "bite" out of the problem, then the next biggest, and so on.
 
-### Luhn's algorithm
-
-1. Starting from the second-to-last digit, take every other digit and multiply by 2.
-2. If any product is greater than 9, add its digits together (or equivalently subtract 9).
-3. Sum all the resulting digits.
-4. Add the digits that were not multiplied (starting from the last digit).
-5. If the total modulo 10 equals 0, the number is valid.
+The CS50 example is giving change with the fewest coins possible.
 
 ```c
-int luhn_check(long card)
+int greedy(int amount)
 {
-    int sum = 0;
-    int position = 0;
+    int coins = 0;
 
-    while (card > 0)
-    {
-        int digit = card % 10;
+    while (amount >= 25) { amount -= 25; coins++; }
+    while (amount >= 10) { amount -= 10; coins++; }
+    while (amount >= 5)  { amount -= 5;  coins++; }
+    while (amount >= 1)  { amount -= 1;  coins++; }
 
-        if (position % 2 == 1)   // every other digit from second-to-last
-        {
-            digit *= 2;
-            if (digit > 9)
-                digit -= 9;      // same as summing the two digits
-        }
-
-        sum += digit;
-        card /= 10;
-        position++;
-    }
-
-    return (sum % 10 == 0);
+    return coins;
 }
 ```
 
-### Card provider identification
+Start with quarters, take as many as fit, move to dimes, and so on. Each loop is one denomination.
 
-```c
-// get first two digits
-long first_two = card;
-while (first_two >= 100)
-    first_two /= 10;
+**Why this works here but not everywhere.** US coin denominations (25, 10, 5, 1) happen to have a mathematical property that makes greedy always produce the optimal result. If the denominations were different — say 1, 3, 4 — greedy would fail. Targeting 6 cents, greedy picks 4+1+1 (3 coins). The optimal is 3+3 (2 coins). For those cases you need dynamic programming instead.
 
-// get first digit
-long first_one = card;
-while (first_one >= 10)
-    first_one /= 10;
-```
-
-| Provider | Starting digits | Length |
-|----------|----------------|--------|
-| AMEX | 34 or 37 | 15 |
-| Mastercard | 51–55 | 16 |
-| Visa | 4 | 13 or 16 |
-
-### Notes from my own solution
-
-What I did well: used modulo and integer division correctly, split logic into functions, understood the algorithm rather than copying it.
-
-What to improve next time: `check_valid_provider` was doing too much — separating Luhn validation from provider identification would be cleaner. Variable names like `amount` should be `digit_count`. Debug `printf` statements should be removed before submission.
+Greedy is fast and simple when it applies. The hard part is knowing whether it actually applies to your problem.
 
 ---
 
 ## Key Takeaways
 
-- `do while` is the correct loop for input validation — it always runs at least once
-- `n % 10` gives the last digit; `n / 10` removes it — these two together let you walk through any number digit by digit
-- Function prototypes allow you to define functions below `main` while still calling them from it
-- `get_long` is required for credit card numbers because `int` is too small
+- Use `do while` for input validation — it is cleaner than faking an initial value to get into a `while` loop
+- `% 10` and `/ 10` together let you walk any number digit by digit from right to left
+- Prototypes let you organise your file so `main` stays at the top and readable
+- Greedy algorithms work by always taking the best immediate option — but this only produces the globally optimal result for certain problem types
+- `get_long` is not optional for credit card numbers — `int` is too small
 
 ---
 
@@ -262,3 +254,4 @@ What to improve next time: `check_valid_provider` was doing too much — separat
 
 - [CS50x](https://cs50.harvard.edu/x/)
 - [Luhn algorithm — Wikipedia](https://en.wikipedia.org/wiki/Luhn_algorithm)
+- [Greedy algorithm — Wikipedia](https://en.wikipedia.org/wiki/Greedy_algorithm)
