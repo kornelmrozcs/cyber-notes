@@ -1,179 +1,246 @@
-OverTheWire Bandit Notes
+# OverTheWire: Bandit — Walkthrough Notes
 
-Level 0 -> 1
+> Personal notes from the Bandit wargame. Each level introduces a new Linux concept or command. Notes include what I tried, what failed, why, and what the correct approach was.
 
-- ssh bandit.labs.overthewire.org -p 2220 -l bandit1
-- ls
-- cat readme
-- ssh connects to a remote Linux server.
-- ls lists files and folders.
-- cat shows the content of a file.
+---
 
-Level 1 -> 2
+## Connecting to the server
 
-- Problem: File was named "-"
-- Wrong command: cat -
-- Correct command: cat ./-
-- Correct command: cat -- "name"
-- What I learned: ./ means current directory, and "-" can be treated as stdin by commands.
+```bash
+ssh bandit.labs.overthewire.org -p 2220 -l bandit0
+# Replace bandit0 with the level you are logging into
+# Default password for level 0: bandit0
+```
 
-Level 2 -> 3
+---
 
-- Same as about use ./
-- I tried " "
-- but problem with - still occurred
-- use name\ bla\ bla after words or 'name bla bla'
+## Level 0 → 1
 
-Level 3 -> 4
+Password stored in a file called `readme` in the home directory.
 
-- password in hidden file i found it by using find commend
-- ls -a can be use also -a for all
+```bash
+ls
+cat readme
+```
 
-Level 4 -> 5
+`ls` lists files in the current directory. `cat` prints the contents of a file to the terminal.
 
-- password in one of files, only one contains human readable data
-- to check it I google for the answer the best approach was find ./\*
-- find ./\* iterate though all files in directory like ls -a
+---
 
-Level 5 -> 6
+## Level 1 → 2
 
-- Password file was somewhere under inhere.
-- It had to be human-readable, 1033 bytes, and not executable.
-- I first checked directory sizes with du, but that was not the right approach.
+Password stored in a file called `-`.
 
-- find . -type f -size 1033c ! -executable
+```bash
+# This does not work — the shell interprets - as stdin
+cat -
 
-- du shows disk usage, often for directories.
-- ls -al shows hidden files.
-- Hidden files start with .
-- In ls -l output, no x in permissions means not executable.
-- 1033 in ls -l output is file size in bytes.
-- file checks whether a file is human-readable/ASCII text.
+# These work
+cat ./-
+cat -- "-"
+```
 
-Level 6 -> 7
+`./` means "current directory". Prefixing the filename with `./` tells the shell it is a file path, not a flag. Without it, `cat -` reads from standard input and waits indefinitely.
 
-- Find a file somewhere on the server.
-- File properties:
-  - owned by user bandit7
-  - owned by group bandit6
-  - 33 bytes in size
+---
 
-- I confused -name bandit7 with -user bandit7.
-- -name searches by filename.
-- -user searches by file owner.
-- -group searches by group owner.
+## Level 2 → 3
 
-- find / -user bandit7 -group bandit6 -size 33c 2>/dev/null
+Password stored in a file called `spaces in this filename`.
 
-- / means the root of the whole filesystem.
-- find can search by owner, group, and size.
-- Permission denied is normal when searching the whole system.
-- 2>/dev/null hides error messages.
-- /etc/bandit_pass contains password files, but I can only read the one I have permission for.
+```bash
+cat 'spaces in this filename'
+cat "spaces in this filename"
+cat spaces\ in\ this\ filename
+```
 
-Level 7 -> 8
+Quotes treat everything inside as a single argument. A backslash before a space escapes it. Tab completion in the shell also handles this automatically.
 
-- Find the password next to the word "millionth" in data.txt.
-- grep millionth data.txt
+---
 
-- grep '^millionth' data.txt
+## Level 3 → 4
 
-- grep 'millionth$' data.txt did not work because $ means end of line.
-- The line did not end with millionth; it started with millionth.
+Password stored in a hidden file inside the `inhere` directory.
 
-- find . -exec grep -H 'millionth' {} \;
+```bash
+cd inhere
+ls        # shows nothing
+ls -a     # shows hidden files (those starting with .)
+cat ./.hidden
+```
 
-- find . searches from the current directory.
-- -exec runs a command on every result.
-- grep -H searches text and prints the filename.
-- {} is replaced by each found file/path.
-- \; ends the -exec command.
-- -type f would make it search only files.
+In Linux, files and directories starting with `.` are hidden by default. `ls` does not show them without the `-a` (all) flag.
 
-- grep searches inside files.
-- ^ means start of line.
-- $ means end of line.
-- For this level, grep millionth data.txt was enough.
+---
 
-Level 8 -> 9
+## Level 4 → 5
 
-- password is the only line of text that occurs only once
+Password stored in the only human-readable file in the `inhere` directory. The rest are binary.
 
-- uniq -u file.txt doesnt work as I expected
-- uniq only compares neighbouring/adjacent lines.
-- data.txt was not sorted, so duplicates were not always next to each other.
-- uniq -u data.txt showed many lines because repeated lines were in different places.
+```bash
+cd inhere
+file ./*
+```
 
-- sort data.txt | uniq -u
+`file` identifies the type of each file. Look for the one described as `ASCII text`. Binary files will show `data` or an executable format.
 
-- sort data.txt puts identical lines next to each other.
-- | passes sorted output into uniq.
-- uniq -u prints only lines that appear once.
+```bash
+cat ./-file07   # whichever file shows as ASCII text
+```
 
-- uniq -c counts adjacent repeated lines.
-- uniq -d shows duplicated adjacent lines.
-- uniq -D shows all copies of duplicated adjacent lines.
-- uniq -f 2 skips first 2 fields, not useful here because each password line is one field.
+---
 
-Level 9 -> 10
+## Level 5 → 6
 
-- password in one of the few human-readable strings, preceded by several ‘=’ characters
+Password is in a file somewhere under `inhere` that is human-readable, exactly 1033 bytes, and not executable.
 
-- data.txt behaves like a binary file.
-- grep "==" data.txt only said: binary file matches.
-- I needed to extract readable strings first.
+```bash
+find . -type f -size 1033c ! -executable
+```
 
-- strings data.txt | grep '=='
+`-type f` limits results to files only. `-size 1033c` matches exactly 1033 bytes (`c` = bytes). `! -executable` excludes executable files.
 
-- strings data.txt extracts printable/human-readable strings from the file.
-- | passes output to grep.
-- grep '==' filters lines containing ==.
+I initially tried `du` to check sizes, which was wrong — `du` shows disk usage for directories, not precise file sizes. `find -size` is the right tool.
 
-- grep may not print lines normally if the file looks binary.
-- strings is useful for finding readable text inside binary/non-text files.
-- type checks shell command/type, not file type.
-- file checks file type.
-- sort/uniq was not needed here; that was previous level logic.
+---
 
-Level 10 -> 11
+## Level 6 → 7
 
-- Password was stored in data.txt encoded with Base64.
+Password is somewhere on the server. File properties: owned by user `bandit7`, owned by group `bandit6`, 33 bytes in size.
 
-- base64 -d data.txt
+```bash
+find / -user bandit7 -group bandit6 -size 33c 2>/dev/null
+```
 
-- base64 encodes/decodes Base64 data.
-- -d means decode.
-- cat data.txt shows the encoded Base64 string.
-- Base64 often ends with = or == padding.
-- base64 -i data.txt without -d encodes the text again, so it is not the solution.
+Searching from `/` (root) covers the entire filesystem. Most paths will return "Permission denied" — `2>/dev/null` redirects error messages to /dev/null and hides them, leaving only useful results.
 
-- Encoding is not encryption.
-- Base64 is reversible representation of data, not a security protection.
+The mistake I made: using `-name bandit7` which searches for a filename, not a file owner. `-user` is the correct flag for ownership.
 
-Level 11 -> 12
+---
 
-- Password was stored in data.txt using ROT13.
-- ROT13 shifts letters by 13 places in the alphabet.
-- Example:
-  - A becomes N
-  - N becomes A
-  - a becomes n
-  - n becomes a
-- cat data.txt showed encoded text.
-- Text started with "Gur cnffjbeq vf", which after ROT13 means "The password is".
-- Correct command:
-- cat data.txt | tr 'A-Za-z' 'N-ZA-Mn-za-m'
-- Alternative command:
-- tr 'A-Za-z' 'N-ZA-Mn-za-m' < data.txt
-- tr translates characters from one set to another.
-- 'A-Za-z' means all uppercase and lowercase letters.
-- 'N-ZA-Mn-za-m' means rotated uppercase and lowercase letters by 13.
-- Numbers and symbols are not changed by this command.
-- I first tried only changing lowercase or uppercase letters, but ROT13 needs both.
-- I tried tr [n-z] [a-m], but it only translated part of lowercase alphabet.
-- I tried &&, but && is shell operator, not part of tr character sets.
-- I tried redirecting output to first.txt, but got permission denied because I could not write in that directory.
-- Important:
-  - use quotes around tr character sets.
-  - ROT13 is encoding/simple substitution, not real encryption.
-- tr [A-MN-Za-mn-z] [N-ZA-Mn-za-m]
+## Level 7 → 8
+
+Password is in `data.txt` next to the word `millionth`.
+
+```bash
+grep millionth data.txt
+```
+
+`grep` searches for a pattern in a file and prints matching lines. `^` anchors to the start of a line and `$` anchors to the end — neither was needed here because `millionth` appears at the start of the line but the file is searched correctly without anchoring.
+
+---
+
+## Level 8 → 9
+
+Password is the only line in `data.txt` that appears exactly once.
+
+```bash
+sort data.txt | uniq -u
+```
+
+`uniq -u` outputs only lines that are not repeated. The critical point: `uniq` only compares adjacent lines. Without sorting first, duplicate lines scattered throughout the file would all appear "unique" to `uniq`. Sorting brings identical lines next to each other before `uniq` processes them.
+
+```bash
+# This does not work correctly on unsorted input
+uniq -u data.txt
+
+# This works
+sort data.txt | uniq -u
+```
+
+---
+
+## Level 9 → 10
+
+Password is in `data.txt` among human-readable strings, preceded by several `=` characters. The file is binary.
+
+```bash
+strings data.txt | grep '=='
+```
+
+Running `grep` directly on a binary file returns only "Binary file matches" without showing the content. `strings` extracts printable ASCII sequences from a binary file first, then `grep` filters those results.
+
+---
+
+## Level 10 → 11
+
+Password is in `data.txt` encoded with Base64.
+
+```bash
+base64 -d data.txt
+```
+
+Base64 is encoding, not encryption. It is reversible without a key — it only changes the representation of data. The encoded string typically ends with `=` or `==` padding. `-d` decodes; without it, `base64` would encode the file again.
+
+---
+
+## Level 11 → 12
+
+Password is in `data.txt` with all letters rotated by 13 positions (ROT13).
+
+```bash
+cat data.txt | tr 'A-Za-z' 'N-ZA-Mn-za-m'
+```
+
+ROT13 shifts each letter 13 places in the alphabet. Since the alphabet has 26 letters, applying ROT13 twice returns the original text. It is a simple substitution cipher — not encryption.
+
+`tr` translates characters from one set to another. `'A-Za-z'` is the input set (all letters). `'N-ZA-Mn-za-m'` is the output set — the same letters shifted by 13.
+
+Common mistakes:
+- using only uppercase or only lowercase — both must be handled
+- using `&&` inside the character sets — `&&` is a shell operator, not valid inside `tr` sets
+- trying to write to a file in a directory where the current user lacks write permission
+
+---
+
+## Command reference
+
+```bash
+# Navigation
+ls              # list files
+ls -a           # list all including hidden
+ls -la          # long format, all files
+cd directory    # change directory
+pwd             # print working directory
+
+# Reading files
+cat file        # print file contents
+cat ./file      # use when filename starts with - or is ambiguous
+
+# Finding files
+find . -type f                         # all files recursively
+find . -name "*.txt"                   # by filename pattern
+find / -user X -group Y -size 33c      # by owner, group, size
+find . -size 1033c ! -executable       # by size, excluding executables
+find . -exec grep -H 'pattern' {} \;   # find then run grep on each result
+
+# Searching within files
+grep 'pattern' file                    # find lines matching pattern
+grep '^pattern' file                   # lines starting with pattern
+grep -H 'pattern' file                 # include filename in output
+
+# Sorting and deduplication
+sort file                              # sort lines alphabetically
+sort file | uniq -u                    # lines that appear exactly once
+uniq -c file                           # count occurrences per line
+
+# Binary files
+file filename                          # identify file type
+strings filename                       # extract printable strings
+
+# Encoding
+base64 file                            # encode to Base64
+base64 -d file                         # decode from Base64
+cat file | tr 'A-Za-z' 'N-ZA-Mn-za-m' # ROT13
+
+# Redirecting output
+2>/dev/null     # discard error messages
+cmd1 | cmd2     # pipe output of cmd1 as input to cmd2
+cmd < file      # use file contents as input to cmd
+```
+
+---
+
+## References
+
+- [OverTheWire: Bandit](https://overthewire.org/wargames/bandit/)
