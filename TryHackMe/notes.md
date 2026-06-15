@@ -961,3 +961,92 @@
 - Router = connects networks, Layer 3, IP, packets.
 - Switch = connects devices in LAN, Layer 2, MAC, frames.
 - Layer 3 switch = can also route between VLANs/subnets.
+
+# How The Web Works
+
+## DNS
+
+- DNS = Domain Name System.
+- It translates domain names into IP addresses.
+- It helps users access websites using names instead of remembering IP numbers.
+
+## Domain hierarchy
+
+- DNS uses a hierarchical structure.
+- Root domain is `.`.
+- TLD = Top-Level Domain.
+- Examples:
+  - gTLD = `.com`, `.gov`
+  - ccTLD = `.pl`, `.uk`
+
+- Second-Level Domain is the main domain name.
+- Example:
+  - `test` in `test.com`
+
+- Subdomain is added before the main domain.
+- Example:
+  - `admin.test.com`
+
+- `admin.test.com` is a subdomain.
+- `test.com/admin` is not a subdomain.
+- It is a URL path.
+
+- A full domain name can be up to 253 characters long.
+- One label can be up to 63 characters long.
+- Labels can use:
+  - `a-z`
+  - `0-9`
+  - hyphens
+
+## DNS record types
+
+- DNS records are not only for website IP addresses.
+
+- A Record
+  - maps a domain name to an IPv4 address
+
+- AAAA Record
+  - maps a domain name to an IPv6 address
+
+- CNAME Record
+  - makes one domain name an alias of another domain name
+
+- MX Record
+  - tells which mail server should receive email for the domain
+
+- TXT Record
+  - stores text information
+  - often used for verification or security settings
+
+## Making a request
+
+- First, the device checks if the domain was resolved recently.
+- It may check local cache first.
+
+- If there is no cached answer, the request goes to a recursive DNS resolver.
+
+- The recursive resolver may already know the answer from its own cache.
+- If yes, the request can end here.
+
+- If not, the recursive resolver asks the root DNS servers.
+
+- Root DNS servers do not give the final IP address.
+- They tell the resolver which TLD server to ask next.
+
+- The TLD server tells the resolver where to find the authoritative DNS server for the domain.
+
+- The authoritative DNS server stores the actual DNS records for that domain.
+
+- The authoritative server returns the final DNS answer.
+- Then the recursive resolver sends the answer back to the device.
+
+- If DNS records are updated, the authoritative DNS server stores the new information.
+- Recursive resolvers will learn the updated answer later, depending on cache/TTL.
+
+## Memory rule
+
+- DNS = domain name to IP address
+- Recursive resolver = asks DNS questions for you
+- Root server = points to correct TLD server
+- TLD server = points to authoritative server
+- Authoritative server = gives final DNS answer
