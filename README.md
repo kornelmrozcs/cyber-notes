@@ -37,9 +37,9 @@ Cyber/
 
 
 ├── CS50/
-│   └── CyberSecurity/
-│       ├── 01-passwords.md
-│       └── 02-cryptography.md
+│   ├── CyberSecurity/
+│   │   ├── 01-passwords.md
+│   │   └── 02-cryptography.md
 │   └── x/
 │       └── 01-c-basics.md
 │
