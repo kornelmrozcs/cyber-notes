@@ -2,7 +2,7 @@
 
 Public repository. Personal notes documenting progress in learning cyber security and programming concepts from scratch.
 
-This is also a coding rehab project — rebuilding fundamentals properly, including very simple exercises, before moving forward. The goal is a knowledge base I can use to generate tests, quizzes and practice tasks with AI to reinforce what I have learned.
+This is also a coding rehab project - rebuilding fundamentals properly, including very simple exercises, before moving forward. The goal is a knowledge base I can use to generate tests, quizzes and practice tasks with AI to reinforce what I have learned.
 
 ---
 
@@ -10,12 +10,12 @@ This is also a coding rehab project — rebuilding fundamentals properly, includ
 
 A growing collection of write-ups and notes covering:
 
-- **CS50 Cybersecurity** — Harvard's intro course on security concepts
-- **CS50x** — C programming fundamentals
-- **TryHackMe** — Pre-Security and networking fundamentals
-- **OverTheWire: Bandit** — Linux and command-line basics through wargames
-- **boot.dev** — Backend and CS fundamentals _(coming later)_
-- **CS50x continued** — More C, algorithms, data structures _(coming later)_
+- **CS50 Cybersecurity** - Harvard's intro course on security concepts
+- **CS50x** - C programming fundamentals
+- **TryHackMe** - Pre-Security and networking fundamentals
+- **OverTheWire: Bandit** - Linux and command-line basics through wargames
+- **boot.dev** - Backend and CS fundamentals _(coming later)_
+- **CS50x continued** - More C, algorithms, data structures _(coming later)_
 
 ---
 
