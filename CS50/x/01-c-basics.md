@@ -1,6 +1,6 @@
-# CS50x — C Basics: Loops, Functions and Algorithms
+# CS50x - C Basics: Loops, Functions and Algorithms
 
-> Notes from CS50x. Covers the building blocks you need before tackling problem sets — input/output, loops, functions, how to pull digits out of a number, and how greedy algorithms think.
+> Notes from CS50x. Covers the building blocks you need before tackling problem sets; input/output, loops, functions, how to pull digits out of a number, and how greedy algorithms think.
 
 ---
 
@@ -11,7 +11,7 @@
 #include <cs50.h>    // get_int, get_long, get_string
 ```
 
-`stdio.h` is standard C. `cs50.h` is a course helper that wraps input functions so you do not have to deal with `scanf` right away. Worth knowing that in real C you would handle input yourself — but for now it keeps things clean.
+`stdio.h` is standard C. `cs50.h` is a course helper that wraps input functions so you do not have to deal with `scanf` right away. Worth knowing that in real C you would handle input yourself; but for now it keeps things clean.
 
 ---
 
@@ -28,13 +28,13 @@ long card = get_long("Card number: ");
 
 Format specifiers to remember: `%i` for int, `%li` for long, `%f` for float, `%s` for string.
 
-One thing that caught me early — using `int` for a credit card number does not work. An `int` maxes out around 2 billion, and card numbers have 13–16 digits. You need `long`.
+Using `int` for a credit card number does not work. An `int` maxes out around 2 billion, and card numbers have 13–16 digits. You need `long`.
 
 ---
 
 ## Loops
 
-Three types, each with a specific use case. Knowing which one to reach for matters more than it seems at first.
+Three types, each with a specific use case. Knowing which one to reach for, matters more than it seems at first.
 
 ### for
 
@@ -62,7 +62,7 @@ while (i < height)
 
 ### do while
 
-Use for input validation. The body runs at least once — you need to ask the question before you can check whether the answer is acceptable.
+Use for input validation. The body runs at least once; you need to ask the question before you can check whether the answer is acceptable.
 
 ```c
 int n;
@@ -73,9 +73,7 @@ do
 while (n <= 0);
 ```
 
-This is the one I kept getting wrong early on. The instinct is to use `while`, but then you have to initialise `n` to some dummy value just to get into the loop. `do while` is cleaner here.
-
-### Nested loops — the Mario pyramid
+### Nested loops - the Mario pyramid
 
 A good exercise for building intuition about how nested loops interact.
 
@@ -143,7 +141,7 @@ void print_row(int hashes)
 }
 ```
 
-A rule worth following: one function, one job. If you find yourself writing a function that validates input _and_ prints results _and_ calculates something — split it.
+A rule worth following: one function, one job. If you find yourself writing a function that validates input _and_ prints results _and_ calculates something; split it.
 
 ---
 
@@ -153,7 +151,7 @@ This is the core mechanic behind several CS50 tasks. Two operations, used togeth
 
 ```c
 int last_digit = n % 10;   // remainder = last digit
-n = n / 10;                 // integer division = remove last digit
+n = n / 10;                // integer division = remove last digit
 ```
 
 ```
@@ -196,7 +194,7 @@ int count_digits(long n)
 
 ## Luhn's algorithm
 
-Used in the Credit problem set to validate whether a card number is plausible before checking the provider. The algorithm was designed so that a single digit transcription error almost always produces an invalid result.
+Used in the Credit problem set to validate whether a card number is valid before checking the provider. The algorithm was designed so that a single digit transcription error almost always produces an invalid result.
 
 How it works at a high level:
 
@@ -204,11 +202,11 @@ How it works at a high level:
 2. If doubling gives you a number greater than 9, add its two digits together (which is the same as subtracting 9).
 3. Sum those results.
 4. Add to that sum all the digits you did **not** double, starting from the last digit.
-5. If the total ends in zero — the number is valid.
+5. If the total ends in zero; the number is valid.
 
 The digit manipulation tools above (`% 10` and `/ 10`) are exactly what you need to implement this. Think about how to track position as you walk through the number right to left, and how to handle the case where doubling a digit gives you a two-digit result.
 
-I am not including the full implementation here — working through it yourself is the point.
+I am not including the full implementation here; working through it yourself is the point.
 
 ---
 
@@ -234,7 +232,7 @@ int greedy(int amount)
 
 Start with quarters, take as many as fit, move to dimes, and so on. Each loop is one denomination.
 
-**Why this works here but not everywhere.** US coin denominations (25, 10, 5, 1) happen to have a mathematical property that makes greedy always produce the optimal result. If the denominations were different — say 1, 3, 4 — greedy would fail. Targeting 6 cents, greedy picks 4+1+1 (3 coins). The optimal is 3+3 (2 coins). For those cases you need dynamic programming instead.
+**Why this works here but not everywhere.** US coin denominations (25, 10, 5, 1) happen to have a mathematical property that makes greedy always produce the optimal result. If the denominations were different; say 1, 3, 4 - greedy would fail. Targeting 6 cents, greedy picks 4+1+1 (3 coins). The optimal is 3+3 (2 coins). For those cases you need dynamic programming instead.
 
 Greedy is fast and simple when it applies. The hard part is knowing whether it actually applies to your problem.
 

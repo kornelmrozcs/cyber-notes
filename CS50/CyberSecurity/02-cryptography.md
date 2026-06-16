@@ -19,7 +19,7 @@ Anyone can decode this without a key.
 
 ```
 "hello" + key → ciphertext
-Only someone with the key can decrypt it.
+'Only' someone with the key can decrypt it.
 ```
 
 **Hashing** produces a fixed-length one-way fingerprint of data. It is not reversible.
@@ -49,10 +49,10 @@ Match = correct password. The original password is never stored.
 When an attacker steals a hash, they guess passwords, hash each guess and compare to the stolen hash. This is why the strength of the original password still matters.
 
 Properties of a good cryptographic hash function:
-- **one-way** — cannot be reversed
-- **deterministic** — same input always produces the same hash
-- **avalanche effect** — a small input change produces a completely different hash
-- **collision resistant** — two different inputs should not produce the same hash
+- **one-way** - cannot be reversed
+- **deterministic** - same input always produces the same hash
+- **avalanche effect** - a small input change produces a completely different hash
+- **collision resistant** - two different inputs should not produce the same hash
 
 ---
 
@@ -70,7 +70,7 @@ salt:      "xK9#mQ2p"   (random, unique per user)
 stored:    SHA256("apple123" + "xK9#mQ2p") → "9f2c1a..."
 ```
 
-Two users with the same password get different hashes because their salts differ. An attacker would need a separate rainbow table for every salt, which is not practical. The salt is stored alongside the hash — it is not secret. The password remains the secret.
+Two users with the same password get different hashes because their salts differ. An attacker would need a separate rainbow table for every salt, which is not practical. The salt is stored alongside the hash; it is not secret. The password remains the secret.
 
 ---
 
@@ -143,7 +143,7 @@ Login:
   Service verifies the signature using the stored public key.
 ```
 
-The user unlocks the private key locally with biometrics or a PIN. The service never receives biometric data. Passkeys are phishing-resistant because they are bound to the specific domain — a fake site cannot trigger a valid signature.
+The user unlocks the private key locally with biometrics or a PIN. The service never receives biometric data. Passkeys are phishing-resistant because they are bound to the specific domain; a fake site cannot trigger a valid signature.
 
 ---
 
@@ -164,7 +164,7 @@ E2E:    You ←[encrypted]→ Server ←[encrypted]→ Recipient
 
 ## File deletion and full-disk encryption
 
-Deleting a file normally removes the reference to it. The data may remain on disk until overwritten and can often be recovered.
+Deleting a file normally removes the reference/pointer to it. The data may remain on disk until overwritten and can often be recovered.
 
 **Secure deletion** overwrites the data with zeros, ones or random patterns, making recovery significantly harder.
 
@@ -182,7 +182,7 @@ Encryption itself is not harmful. Ransomware abuses it to hold data hostage. The
 
 ## Quantum computing
 
-Classical computers use bits: 0 or 1. Quantum computers use qubits, which can exist in superposition — not strictly 0 or 1 until measured.
+Classical computers use bits: 0 or 1. Quantum computers use qubits, which can exist in superposition; not strictly 0 or 1 until measured.
 
 Sufficiently powerful quantum computers could break some current public-key algorithms (RSA, ECC) by solving the underlying mathematical problems much faster. This is why **post-quantum cryptography** is being developed and standardised. NIST published its first post-quantum standards in 2024 (CRYSTALS-Kyber, CRYSTALS-Dilithium).
 
@@ -190,7 +190,7 @@ Sufficiently powerful quantum computers could break some current public-key algo
 
 ## Key Takeaways
 
-- Encoding is not security — anyone can reverse it
+- Encoding is not security - anyone can reverse it
 - Hashing is one-way; salting makes rainbow tables useless
 - Symmetric encryption: one shared key; problem is distributing it securely
 - Asymmetric encryption: public key encrypts, private key decrypts

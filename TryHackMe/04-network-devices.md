@@ -1,4 +1,4 @@
-# TryHackMe — Network Devices
+# TryHackMe - Network Devices
 
 > Pre-Security path. Covers Layer 2 and Layer 3 switches, VLANs, port forwarding, firewalls and VPNs.
 
@@ -43,9 +43,9 @@ Someone connecting to the public IP on port 8080 is forwarded to the internal se
 
 A firewall filters network traffic based on rules. It can allow or deny traffic based on source IP, destination IP, port, protocol, direction (inbound/outbound) and connection state.
 
-**Stateful firewall** — tracks the state of connections. It knows whether incoming traffic is a response to an outbound connection initiated from inside the network, and allows it through without needing an explicit inbound rule.
+**Stateful firewall** - tracks the state of active connections. When a device inside the network starts a connection to the outside, the firewall remembers it. If incoming traffic is a response to that connection, it gets allowed through automatically. If incoming traffic has no matching outbound connection on record, it gets blocked. This means you do not need to write explicit inbound rules for every expected response. The firewall figures it out from context.
 
-**Stateless firewall** — evaluates each packet individually against static rules, without any connection context. Simpler but less intelligent.
+**Stateless firewall** - checks each packet individually against a fixed set of rules. It has no memory of previous packets, so it has no idea if a packet is part of an existing connection or something random coming from outside. Every packet gets judged on its own. Simpler to set up, but easier to exploit because it cannot tell the difference between legitimate response traffic and unsolicited incoming packets.
 
 ```
 Stateful: user opens connection → server replies → firewall allows reply automatically
@@ -59,22 +59,22 @@ Stateless: every packet needs a matching rule regardless of context
 A VPN (Virtual Private Network) creates an encrypted tunnel between a device and a remote network. The device behaves as if it were physically inside that network.
 
 ```
-Device ──[encrypted tunnel]── VPN server ── private network / internet
+Device -[encrypted tunnel]- VPN server - private network / internet
 ```
 
 Common uses: remote access to a corporate network, protecting traffic on untrusted Wi-Fi, connecting two office sites.
 
-What a VPN does not do: it does not protect against malware or phishing, and it does not make the user anonymous — the VPN provider can still see traffic.
+What a VPN does not do: it does not protect against malware or phishing, and it does not make the user anonymous; the VPN provider can still see traffic.
 
 ### VPN protocols
 
-**PPTP** — Point-to-Point Tunneling Protocol. An older protocol considered weak. Should be avoided.
+**PPTP** - Point-to-Point Tunneling Protocol. An older protocol considered weak. Should be avoided.
 
-**IPsec** — Internet Protocol Security. Encrypts and authenticates IP traffic. Used in many enterprise and site-to-site VPN setups.
+**IPsec** - Internet Protocol Security. Encrypts and authenticates IP traffic. Used in many enterprise and site-to-site VPN setups.
 
-**OpenVPN** — open-source, strong encryption, widely used.
+**OpenVPN** - open-source, strong encryption, widely used.
 
-**WireGuard** — modern, fast, simple to configure. Increasingly common.
+**WireGuard** - modern, fast, simple to configure. Increasingly common.
 
 ---
 
@@ -82,7 +82,7 @@ What a VPN does not do: it does not protect against malware or phishing, and it 
 
 - A Layer 3 switch adds routing to the capabilities of a Layer 2 switch
 - VLANs logically isolate traffic on the same physical hardware; inter-VLAN routing still requires a Layer 3 device
-- Port forwarding exposes internal services — use it only when needed
+- Port forwarding exposes internal services - use it only when needed
 - Stateful firewalls track connection context; stateless firewalls do not
 - A VPN encrypts the tunnel but does not protect against phishing or malware
 - PPTP is outdated; prefer IPsec, OpenVPN or WireGuard

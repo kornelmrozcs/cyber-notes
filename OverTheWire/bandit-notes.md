@@ -1,4 +1,4 @@
-# OverTheWire: Bandit — Walkthrough Notes
+# OverTheWire: Bandit  - Walkthrough Notes
 
 > Personal notes from the Bandit wargame. Each level introduces a new Linux concept or command. Notes include what I tried, what failed, why, and what the correct approach was.
 
@@ -40,7 +40,7 @@ cat ./-
 cat -- "-"
 ```
 
-`./` means "current directory". Prefixing the filename with `./` tells the shell it is a file path, not a flag. Without it, `cat -` reads from standard input and waits indefinitely.
+`./` means "current directory". Prefixing the filename with `./` tells the shell it is a file path, not a flag. Without it, `cat -` reads from standard input and waits.
 
 ---
 
@@ -51,6 +51,7 @@ Password stored in a file called `spaces in this filename`.
 ```bash
 cat 'spaces in this filename'
 cat "spaces in this filename"
+cat --"spaces in this filename"
 cat spaces\ in\ this\ filename
 ```
 
@@ -100,7 +101,7 @@ find . -type f -size 1033c ! -executable
 
 `-type f` limits results to files only. `-size 1033c` matches exactly 1033 bytes (`c` = bytes). `! -executable` excludes executable files.
 
-I initially tried `du` to check sizes, which was wrong — `du` shows disk usage for directories, not precise file sizes. `find -size` is the right tool.
+I initially tried `du` to check sizes, which was wrong; `du` shows disk usage for directories, not precise file sizes. `find -size` is the right tool.
 
 ---
 
@@ -112,9 +113,7 @@ Password is somewhere on the server. File properties: owned by user `bandit7`, o
 find / -user bandit7 -group bandit6 -size 33c 2>/dev/null
 ```
 
-Searching from `/` (root) covers the entire filesystem. Most paths will return "Permission denied" — `2>/dev/null` redirects error messages to /dev/null and hides them, leaving only useful results.
-
-The mistake I made: using `-name bandit7` which searches for a filename, not a file owner. `-user` is the correct flag for ownership.
+Searching from `/` (root) covers the entire filesystem. Most paths will return "Permission denied"; `2>/dev/null` redirects error messages to /dev/null and hides them, leaving only useful results.
 
 ---
 
@@ -126,7 +125,8 @@ Password is in `data.txt` next to the word `millionth`.
 grep millionth data.txt
 ```
 
-`grep` searches for a pattern in a file and prints matching lines. `^` anchors to the start of a line and `$` anchors to the end — neither was needed here because `millionth` appears at the start of the line but the file is searched correctly without anchoring.
+`grep` searches for a pattern in a file and prints matching lines. 
+`^` to the start of a line and `$` to the end; neither was needed here because `millionth` appears at the start of the line but the file is searched correctly without anchoring.
 
 ---
 
@@ -170,7 +170,7 @@ Password is in `data.txt` encoded with Base64.
 base64 -d data.txt
 ```
 
-Base64 is encoding, not encryption. It is reversible without a key — it only changes the representation of data. The encoded string typically ends with `=` or `==` padding. `-d` decodes; without it, `base64` would encode the file again.
+Base64 is encoding, not encryption. It is reversible without a key; it only changes the representation of data. The encoded string typically ends with `=` or `==` padding. `-d` decodes; without it, `base64` would encode the file again.
 
 ---
 
@@ -182,14 +182,9 @@ Password is in `data.txt` with all letters rotated by 13 positions (ROT13).
 cat data.txt | tr 'A-Za-z' 'N-ZA-Mn-za-m'
 ```
 
-ROT13 shifts each letter 13 places in the alphabet. Since the alphabet has 26 letters, applying ROT13 twice returns the original text. It is a simple substitution cipher — not encryption.
+ROT13 shifts each letter 13 places in the alphabet. 
 
-`tr` translates characters from one set to another. `'A-Za-z'` is the input set (all letters). `'N-ZA-Mn-za-m'` is the output set — the same letters shifted by 13.
-
-Common mistakes:
-- using only uppercase or only lowercase — both must be handled
-- using `&&` inside the character sets — `&&` is a shell operator, not valid inside `tr` sets
-- trying to write to a file in a directory where the current user lacks write permission
+`tr` translates characters from one set to another. `'A-Za-z'` is the input set (all letters). `'N-ZA-Mn-za-m'` is the output set; the same letters shifted by 13.
 
 ---
 

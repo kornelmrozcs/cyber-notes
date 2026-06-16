@@ -1,4 +1,4 @@
-# TryHackMe — Network Basics
+# TryHackMe - Network Basics
 
 > Pre-Security path. Covers IP addresses, MAC addresses, ping, LAN, network topologies, routers, switches, subnetting, ARP and DHCP.
 
@@ -6,7 +6,7 @@
 
 ## IP address
 
-An IP address is a logical address that identifies a network interface. "Logical" means it is assigned by network configuration rather than permanently built into hardware — it can change, for example when DHCP assigns a new one.
+An IP address is a logical address that identifies a network interface. "Logical" means it is assigned by network configuration rather than permanently built into hardware; it can change, for example when DHCP assigns a new one.
 
 ```
 IPv4 example: 192.168.1.100
@@ -26,7 +26,7 @@ Example: 00:1A:2B:3C:4D:5E
 Format: six octets in hex separated by colons
 ```
 
-MAC addresses can be changed in software (spoofed). They operate at Layer 2 and are only relevant within the local network — they are not forwarded beyond the local segment.
+MAC addresses can be changed in software (spoofed). They operate at Layer 2 and are only relevant within the local network; they are not forwarded beyond the local segment.
 
 | | IP | MAC |
 |--|--|--|
@@ -45,7 +45,7 @@ ping 192.168.1.1
 ping google.com
 ```
 
-It sends an ICMP Echo Request and waits for an ICMP Echo Reply. Ping measures latency and packet loss — it does not measure bandwidth or download speed.
+It sends an ICMP Echo Request and waits for an ICMP Echo Reply. Ping measures latency and packet loss; it does not measure bandwidth or download speed.
 
 ---
 
@@ -59,11 +59,11 @@ A LAN (Local Area Network) is a network covering a small physical area such as a
 
 Topology describes how devices are connected.
 
-**Star topology** — all devices connect to a central switch or hub. The most common in modern networks. A single cable failure affects only one device, but if the central switch fails the whole network goes down.
+**Star topology** - all devices connect to a central switch or hub. The most common in modern networks. A single cable failure affects only one device, but if the central switch fails the whole network goes down.
 
-**Bus topology** — all devices share a single backbone cable. Simple and cheap but collisions slow it down, and a break in the main cable affects the entire network.
+**Bus topology** - all devices share a single backbone cable. Simple and cheap but collisions slow it down, and a break in the main cable affects the entire network.
 
-**Ring topology** — devices are connected in a loop. In token ring, a token controls which device can transmit. A break in the ring can disrupt the entire network. Rarely used in modern LANs.
+**Ring topology** - devices are connected in a loop. In token ring, a token controls which device can transmit. A break in the ring can disrupt the entire network. Rarely used in modern LANs.
 
 ---
 
@@ -157,3 +157,4 @@ ACK      — server confirms and assigns the configuration
 ## References
 
 - [TryHackMe Pre-Security Path](https://tryhackme.com/path/outline/presecurity)
+- [Worth watching - YouTube ](https://www.youtube.com/watch?v=bdeV_TjNfFA)

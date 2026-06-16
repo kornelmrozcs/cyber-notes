@@ -1,4 +1,4 @@
-# TryHackMe — TCP, UDP and the Three-Way Handshake
+# TryHackMe - TCP, UDP and the Three-Way Handshake
 
 > Pre-Security path. Covers TCP and UDP, the three-way handshake, TCP headers, connection teardown and ports.
 
@@ -27,21 +27,21 @@ TCP (Transmission Control Protocol) is connection-based and reliable. Before any
 
 ## TCP header fields
 
-| Field | Description |
-|-------|-------------|
-| Source port | port opened by the sender, usually random/ephemeral |
-| Destination port | port of the service on the receiving end |
-| Sequence number | used to order data and detect missing segments |
+| Field                  | Description                                                |
+| ---------------------- | ---------------------------------------------------------- |
+| Source port            | port opened by the sender, usually random/ephemeral        |
+| Destination port       | port of the service on the receiving end                   |
+| Sequence number        | used to order data and detect missing segments             |
 | Acknowledgement number | confirms received data and indicates what is expected next |
-| Flags | SYN, ACK, FIN, RST — control TCP behaviour |
-| Checksum | error detection |
+| Flags                  | SYN, ACK, FIN, RST - control TCP behaviour                 |
+| Checksum               | error detection                                            |
 
 ### TCP flags
 
-**SYN** — synchronise; used to initiate a connection.
-**ACK** — acknowledge; confirms receipt.
-**FIN** — finish; initiates a clean connection close.
-**RST** — reset; abruptly terminates a connection.
+**SYN** - synchronise; used to initiate a connection.
+**ACK** - acknowledge; confirms receipt.
+**FIN** - finish; initiates a clean connection close.
+**RST** - reset; abruptly terminates a connection.
 
 ---
 
@@ -54,7 +54,7 @@ Client                        Server
   |                              |
   |──── SYN ────────────────────>|   "I want to connect. My SEQ=x."
   |                              |
-  |<─── SYN/ACK ────────────────|   "Agreed. My SEQ=y. I acknowledge your SEQ."
+  |<─── SYN/ACK ─────────────────|   "Agreed. My SEQ=y. I acknowledge your SEQ." 
   |                              |
   |──── ACK ────────────────────>|   "Confirmed. Connection open."
   |                              |
@@ -67,9 +67,9 @@ SYN → SYN/ACK → ACK. Three steps, three-way.
 
 ## Closing a connection
 
-**FIN** — clean close. One side sends FIN, the other acknowledges, then sends its own FIN, which is acknowledged in return. All four steps complete cleanly.
+**FIN** - clean close. One side sends FIN, the other acknowledges, then sends its own FIN, which is acknowledged in return. All four steps complete cleanly.
 
-**RST** — immediate reset. Abruptly ends the connection without the normal teardown sequence. Used when something has gone wrong or the connection is rejected outright.
+**RST** - immediate reset. Abruptly ends the connection without the normal teardown sequence. Used when something has gone wrong or the connection is rejected outright.
 
 ---
 

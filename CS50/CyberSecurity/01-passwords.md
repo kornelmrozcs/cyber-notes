@@ -1,7 +1,6 @@
-# CS50 Cybersecurity — Passwords, Attacks and Authentication
+# CS50 Cybersecurity - Passwords, Attacks and Authentication
 
-> Lecture 0. Covers how passwords work, common attacks against them, and the defences and alternatives that exist.
-
+> Lecture 0. Covers how passwords work, common attacks, and the defences that exist.
 ---
 
 ## Password rules
@@ -53,7 +52,7 @@ Longer passwords increase the number of combinations exponentially. Defences inc
 
 ## Dictionary attacks
 
-A dictionary attack does not try every combination. It tries likely passwords first — common words, leaked password lists, names, dates and known patterns.
+A dictionary attack does not try every combination. It tries likely passwords first; common words, leaked password lists, names, dates and known patterns.
 
 ```
 password, qwerty, letmein, summer2026, football123
@@ -90,15 +89,15 @@ Good practice is a strong master password, MFA on the manager account itself, an
 
 ## Multi-factor authentication (MFA)
 
-MFA requires more than one type of proof to log in. There are three factor types.
+MFA requires more than one type of proof to log in. There are three factors.
 
-**Knowledge** — something you know: password, PIN, security question. Can be guessed, stolen, phished or leaked.
+**Knowledge** - something you know: password, PIN, security question. Can be guessed, stolen, phished or leaked.
 
-**Possession** — something you have: phone, authenticator app, hardware security key, smart card. Phone can be stolen; SMS is vulnerable to SIM swapping.
+**Possession** - something you have: phone, authenticator app, hardware security key, smart card. Phone can be stolen; SMS is vulnerable to SIM swapping.
 
-**Inherence** — something you are: fingerprint, face scan, iris scan. Biometric data is difficult to change if compromised.
+**Inherence** - something you are: fingerprint, face scan, iris scan. Biometric data is difficult to change if compromised.
 
-MFA requires at least two different factor types. Password + PIN is not MFA — both are knowledge factors.
+MFA requires at least two different factor types. Password + PIN is not MFA; both are knowledge factors.
 
 ---
 
@@ -120,7 +119,7 @@ Defences:
 
 ## Social engineering and phishing
 
-Social engineering attacks the human rather than the technical system. The attacker manipulates people into doing something unsafe — giving up a password, clicking a link, approving a login request, or transferring money.
+Social engineering attacks the human rather than the technical system. The attacker manipulates people into doing something unsafe; giving up a password, clicking a link, approving a login request, or transferring money.
 
 **Phishing** is a social engineering attack delivered as a fake message that appears to come from a trusted source.
 
@@ -154,7 +153,7 @@ SSO lets a user log in once with an identity provider and access multiple servic
 "Sign in with Google" / "Sign in with Microsoft"
 ```
 
-Benefits include fewer passwords, easier access management and the ability to enforce MFA centrally. The risk is that compromising the SSO account gives an attacker access to all connected services.
+Benefits include fewer passwords, easier access management and the ability to enforce MFA centrally. The risk is that compromising the SSO account gives an attacker access to all connected services (similar to password manager).
 
 ---
 
@@ -164,14 +163,14 @@ Passkeys are a passwordless login method based on public-key cryptography. The p
 
 The user unlocks the private key locally with a fingerprint, face scan or device PIN. The service never receives biometric data.
 
-Passkeys are resistant to phishing because they are bound to the legitimate domain. A fake login page cannot use the passkey — it would not match the expected domain.
+Passkeys are resistant to phishing because they are bound to the legitimate domain. A fake login page cannot use the passkey; it would not match the expected domain.
 
 ---
 
 ## Key Takeaways
 
 - Length and randomness beat complexity rules for password strength
-- Reused passwords make credential stuffing effective — unique password per account is the single most important defence
+- Reused passwords make credential stuffing effective; unique password per account is the single most important defence
 - MFA requires two different factor types; SMS is the weakest option
 - Passkeys solve phishing and reuse at the same time
 - Social engineering targets humans; technical controls alone cannot stop it
