@@ -188,6 +188,39 @@ ROT13 shifts each letter 13 places in the alphabet.
 
 ---
 
+## Level 12 → 13
+
+Password is in `data.txt, which is a hexdump of a file that has been repeatedly compressed.
+
+```bash
+xxd -r data.txt > data2
+file data2                     # gzip compressed data
+mv data2 data2.gz && gzip data2.gz
+file data2                     # POSIX tar archive
+mv data2 data2.tar && tar -xf data2.tar
+# now you have data5.bin and data6.bin
+file data5.bin                 # POSIX tar archive
+mv data5.bin data5.tar && tar -xf data5.tar
+# now you have data6.bin (overwrites the previous one)
+file data6.bin                 # bzip2 compressed data
+mv data6.bin data6.bz2 && bzip2 data6.bz2
+# now you have data6
+file data6                     # POSIX tar archive
+mv data6 data6.tar && tar -xf data6.tar
+# now you have data8.bin
+file data8.bin                 # gzip compressed data
+mv data8.bin data8.gz && gzip data8.gz
+# now you have data8
+file data8                     # ASCII text
+cat data8                      # The password is ...
+```
+
+Hex dump - textual hexadecimal view of binary data. `xxd -r` converts it back into a binary file. Then use `file` to identify each format (gzip, tar, bzip2) and the appropriate decompression tool.
+
+Important: Always check the file after each operation before proceeding.
+
+---
+
 ## Command reference
 
 ```bash
@@ -227,6 +260,23 @@ strings filename                       # extract printable strings
 base64 file                            # encode to Base64
 base64 -d file                         # decode from Base64
 cat file | tr 'A-Za-z' 'N-ZA-Mn-za-m' # ROT13
+
+# Hexdump
+xxd file              # show hexdump of file
+xxd -r file > out     # reverse hexdump (convert back to binary)
+
+# Compression / archiving
+gzip -d file.gz       # decompress gzip
+gunzip file.gz        # same
+bzip2 -d file.bz2     # decompress bzip2
+bunzip2 file.bz2      # same
+tar -xf archive.tar   # extract tar (x = extract, f = file)
+tar -xvf archive.tar  # verbose (shows what is extracted)
+tar -tf archive.tar   # list contents without extracting
+tar -xaf file         # auto-detect compression (if extension matches)
+
+# File analysis
+file -b file          # show only type, without filename
 
 # Redirecting output
 2>/dev/null     # discard error messages

@@ -138,3 +138,4 @@ The TCP/IP model has four layers rather than seven.
 ## References
 
 - [TryHackMe Pre-Security Path](https://tryhackme.com/path/outline/presecurity)
+- [Computerphile - Network with Richard G Clegg](https://www.youtube.com/watch?v=ihvbhwGblQg&list=PLzH6n4zXuckqB4HFTUSqPy-6j-0jbRW0H&index=6)
