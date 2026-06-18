@@ -65,7 +65,10 @@ Cyber/
 │   ├── 05-dns.md
 │   ├── 06-http.md
 │   ├── 07-websites.md
-│   └── 08-websites-2.md
+│   ├── 08-websites-2.md
+│   ├── 09-computer-basics.md
+│   └── 10-client-server-basics.md
+│
 └── OverTheWire/
     ├── bandit-notes.md
     └── bandit-passwords.md  ← you wish byych
