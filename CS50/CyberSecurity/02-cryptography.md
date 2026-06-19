@@ -72,6 +72,17 @@ stored:    SHA256("apple123" + "xK9#mQ2p") → "9f2c1a..."
 
 Two users with the same password get different hashes because their salts differ. An attacker would need a separate rainbow table for every salt, which is not practical. The salt is stored alongside the hash; it is not secret. The password remains the secret.
 
+However, **Salting stops rainbow tables, but not brute-force.** A salt forces an attacker to crack each hash separately instead of using a precomputed table. It does not slow down the guessing itself. A fast hash like SHA-256 can be computed billions of times per second on a GPU, so a stolen salted hash of a weak password still falls quickly.
+
+This is why general-purpose hashes (SHA-256, MD5) are the wrong tool for storing passwords. Password storage uses slow, deliberately expensive functions:
+
+- **bcrypt** - slow by design, widely used
+- **scrypt** - slow and memory-hard, harder to attack with custom hardware
+- **Argon2** - modern standard, winner of the Password Hashing Competition
+- **PBKDF2** - runs a hash many times over to raise the cost
+
+Salt defeats precomputation. A slow hash defeats raw speed. Good password storage uses both.
+
 ---
 
 ## Symmetric encryption

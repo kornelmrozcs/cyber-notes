@@ -195,7 +195,7 @@ Password is in `data.txt, which is a hexdump of a file that has been repeatedly 
 ```bash
 xxd -r data.txt > data2
 file data2                     # gzip compressed data
-mv data2 data2.gz && gzip data2.gz
+mv data2 data2.gz && gzip -d data2.gz
 file data2                     # POSIX tar archive
 mv data2 data2.tar && tar -xf data2.tar
 # now you have data5.bin and data6.bin
@@ -203,13 +203,13 @@ file data5.bin                 # POSIX tar archive
 mv data5.bin data5.tar && tar -xf data5.tar
 # now you have data6.bin (overwrites the previous one)
 file data6.bin                 # bzip2 compressed data
-mv data6.bin data6.bz2 && bzip2 data6.bz2
+mv data6.bin data6.bz2 && bzip2 -d data6.bz2
 # now you have data6
 file data6                     # POSIX tar archive
 mv data6 data6.tar && tar -xf data6.tar
 # now you have data8.bin
 file data8.bin                 # gzip compressed data
-mv data8.bin data8.gz && gzip data8.gz
+mv data8.bin data8.gz && gzip -d data8.gz
 # now you have data8
 file data8                     # ASCII text
 cat data8                      # The password is ...
