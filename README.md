@@ -1,49 +1,24 @@
 # Cyber Security & Programming Notes
 
-Public repository. Personal notes documenting progress in learning cyber security.
-This is also a coding rehab project. Rebuilding fundamentals without AI.
-
----
-
-### Custom AI Model
-
-I'm working on creating **perfect, structured notes** using various AI tools. My vision includes:
-
-- **Automated note enhancement** - Using AI to improve clarity, structure, and completeness of notes
-- **Smart knowledge organization** - Creating interconnected knowledge graphs and mind maps
-- **Personalized practice** - Generating custom tests, quizzes, and practical challenges based on my notes
-
-In the near future, I plan to **train my own AI model** specifically for note improvement. This model will:
-
-- **Automatically review and correct** my notes for accuracy, grammar correction and completeness
-- **Suggest additional resources** and learning materials
-- **Generate interactive quizzes** to test knowledge retention
-- **Create practical attack scenarios** and hands-on exercises
-- **Identify knowledge gaps** and recommend what to study next
-
----
+Public repository. Personal notes documenting progress in learning cyber security. This is also a coding rehab project. 
 
 ## What is this
 
 A growing collection of write-ups and notes covering:
 
-- **CS50 Cybersecurity** - Harvard's intro course on security concepts
-- **CS50x** - C programming fundamentals
-- **TryHackMe** - Pre-Security and networking fundamentals
-- **OverTheWire: Bandit** - Linux and command-line basics through wargames
-
----
+- CS50 Cybersecurity - Harvard's intro course on security concepts
+- CS50x - C programming fundamentals
+- TryHackMe - Pre-Security path: networking, web, and infrastructure basics
+- OverTheWire: Bandit - Linux and command-line basics through wargames
 
 ## Where to start
 
 If you are new here or just browsing:
 
-1. **CS50 Cyber Security** → `CS50/01-passwords.md`
-2. **Pre Security TryHackMe** → `TryHackMe/01-network-basics.md`
-3. **Linux command line GAME** → `OverTheWire/bandit-notes.md`
-4. **Programming basics** → `CS50/x/01-c-basics.md`
-
----
+1. CS50 Cyber Security → `CS50/CyberSecurity/01-passwords.md`
+2. Pre Security TryHackMe → `TryHackMe/01-network-basics.md`
+3. Linux command line GAME → `OverTheWire/bandit-notes.md`
+4. Programming basics → `CS50/x/01-c-basics.md`
 
 ## Structure
 
@@ -55,7 +30,8 @@ Cyber/
 │   │   ├── 01-passwords.md
 │   │   └── 02-cryptography.md
 │   └── x/
-│       └── 01-c-basics.md
+│       ├── 01-c-basics.md
+│       └── 02-c-arrays.md
 │
 ├── TryHackMe/
 │   ├── 01-network-basics.md
@@ -67,14 +43,14 @@ Cyber/
 │   ├── 07-websites.md
 │   ├── 08-websites-2.md
 │   ├── 09-computer-basics.md
-│   └── 10-client-server-basics.md
+│   ├── 10-client-server-basics.md
+│   ├── 11-virtualisation-basics.md
+│   └── 12-cloud-basics.md
 │
 └── OverTheWire/
     ├── bandit-notes.md
     └── bandit-passwords.md  ← you wish byych
 ```
-
----
 
 ## References
 

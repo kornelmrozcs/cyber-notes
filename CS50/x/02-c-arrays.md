@@ -141,6 +141,49 @@ This is the full-circle moment between CS50x and the Bandit / Linux work.
 
 ---
 
+## Exercise: Scrabble
+
+Score two words by Scrabble letter values, higher total wins.
+
+Core trick, mapping a letter to its score:
+
+```c
+char c = toupper(player[i]);   // normalise case
+if (isupper(c))                // skip spaces, digits, punctuation
+{
+    total += points[c - 'A'];  // 'A'->0, 'B'->1, ... 'Z'->25
+}
+```
+
+- `letter - 'A'` turns a letter into an array index 0-25
+- `toupper()` handles mixed case, `isupper()` keeps only letters
+- Compute `strlen` once before the loop, not inside the condition (avoids O(n^2))
+- Use `'A'`, not `65`. Same value, reads clearly
+
+---
+
+## Character checks: ctype.h vs manual ranges
+
+Both Scrabble and Readability come down to classifying characters. There are two ways to do it and they are equivalent. `ctype.h` is shorter, the manual range shows what is happening underneath. Both are valid, pick whichever reads clearer.
+
+|ctype.h|manual range (same check)|
+|---|---|
+|`isupper(c)`|`c >= 'A' && c <= 'Z'`|
+|`islower(c)`|`c >= 'a' && c <= 'z'`|
+|`isalpha(c)`|`(c >= 'A' && c <= 'Z') \| (c >= 'a' && c <= 'z')`|
+|`isdigit(c)`|`c >= '0' && c <= '9'`|
+|`isspace(c)`|space, tab, newline ( , `\t`, `\n`)|
+
+```c
+// these two lines do exactly the same check
+if (isalpha(text[i])) { ... }
+if ((text[i] >= 'A' && text[i] <= 'Z') || (text[i] >= 'a' && text[i] <= 'z')) { ... }
+```
+
+Readability used these to count letters (`isalpha`, or the explicit range), words (`isspace`), and sentences (`.` `!` `?`). The `ctype.h` functions need `#include <ctype.h>`.
+
+---
+
 ## Key Takeaways
 
 - The four build steps are preprocess, compile, assemble, link. `make` (clang) runs all four for you
@@ -151,6 +194,8 @@ This is the full-circle moment between CS50x and the Bandit / Linux work.
 - `float` is ~7 significant digits, `double` is ~16; reach for `double` when precision matters
 - A string is a char array ending in `\0`, so storing n characters takes n + 1 bytes
 - `argc`/`argv` is how a program reads command-line input, the same mechanism `cat` and `grep` use
+- Map a letter to an array index with `letter - 'A'` (0-25); normalise with `toupper`, filter with `isupper`
+- Character checks two ways: `isalpha`/`isupper`/`isdigit` (ctype.h) equal explicit ASCII range checks, both valid
 
 ---
 
